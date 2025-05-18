@@ -1,0 +1,36 @@
+
+import React from 'react';
+import { WorkspaceProvider } from '@/context/WorkspaceContext';
+import { BoardProvider } from '@/context/BoardContext';
+import WorkspaceHeader from '@/components/WorkspaceHeader';
+import Board from '@/components/Board';
+import { useParams, Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-react';
+
+const BoardView = () => {
+  const { boardId } = useParams<{ boardId: string }>();
+  
+  return (
+    <div className="flex flex-col h-screen">
+      <WorkspaceProvider>
+        <WorkspaceHeader />
+        <div className="bg-muted/30 p-2 flex items-center">
+          <Button variant="ghost" size="sm" asChild className="mr-4">
+            <Link to="/">
+              <ChevronLeft className="h-4 w-4 mr-1" /> Back to Boards
+            </Link>
+          </Button>
+          <h1 className="text-lg font-medium">Board: {boardId}</h1>
+        </div>
+        <main className="flex-1 bg-background overflow-hidden flex flex-col">
+          <BoardProvider>
+            <Board />
+          </BoardProvider>
+        </main>
+      </WorkspaceProvider>
+    </div>
+  );
+};
+
+export default BoardView;

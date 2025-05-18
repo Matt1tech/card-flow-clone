@@ -12,6 +12,15 @@ export interface List {
   cards: Card[];
 }
 
-export interface BoardData {
+export interface Board {
+  id: string;
+  title: string;
   lists: List[];
+}
+
+export interface Workspace {
+  id: string;
+  title: string;
+  description: string;
+  boards: Board[];
 }
