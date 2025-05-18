@@ -89,7 +89,7 @@ export default function Board() {
   };
 
   return (
-    <div className="flex-1 overflow-x-auto p-6">
+    <div className="flex-1 overflow-x-auto p-6 bg-background dark:bg-background">
       <div className="flex space-x-4 items-start h-full">
         {lists.map((list) => (
           <List 

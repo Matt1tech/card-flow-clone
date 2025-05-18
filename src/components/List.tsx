@@ -49,8 +49,8 @@ export default function List({ list, onDragStart, onDragOver, onDrop }: ListProp
   };
 
   return (
-    <CardUI className="flex flex-col w-72 bg-muted/40 shadow-sm h-full max-h-[calc(100vh-10rem)] overflow-hidden">
-      <div className="p-3 flex items-center justify-between border-b">
+    <CardUI className="flex flex-col w-72 bg-muted/40 dark:bg-muted/10 shadow-sm h-full max-h-[calc(100vh-10rem)] overflow-hidden">
+      <div className="p-3 flex items-center justify-between border-b dark:border-border">
         {isEditingTitle ? (
           <form onSubmit={handleTitleSubmit} className="flex-1">
             <Input

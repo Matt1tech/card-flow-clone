@@ -50,7 +50,7 @@ export default function Card({ card, listId, index, onDragStart }: CardProps) {
     <>
       <CardUI 
         ref={cardRef}
-        className="mb-2 shadow-sm cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-primary/60"
+        className="mb-2 shadow-sm cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-primary/60 dark:bg-card dark:border-l-primary/70"
         draggable
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
@@ -97,7 +97,11 @@ export default function Card({ card, listId, index, onDragStart }: CardProps) {
               {card.labels.map(label => (
                 <Badge 
                   key={label.id} 
-                  className={`bg-${label.color}-500 hover:bg-${label.color}-600 text-xs py-0 px-2`}
+                  style={{ 
+                    backgroundColor: `var(--${label.color}-500, #6b7280)`,
+                    color: 'white'
+                  }}
+                  className="text-xs py-0 px-2 hover:opacity-90"
                 >
                   {label.name}
                 </Badge>
@@ -105,7 +109,7 @@ export default function Card({ card, listId, index, onDragStart }: CardProps) {
             </div>
           )}
 
-          <div className="flex items-center space-x-3 text-xs text-muted-foreground mt-2">
+          <div className="flex items-center flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground mt-2">
             {card.dueDate && (
               <div className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
