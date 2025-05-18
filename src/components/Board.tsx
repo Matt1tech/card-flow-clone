@@ -1,5 +1,5 @@
 
-import { useState, useRef, DragEvent } from 'react';
+import React, { useState, useRef, DragEvent } from 'react';
 import { useBoard } from '@/context/BoardContext';
 import List from './List';
 import AddList from './AddList';
