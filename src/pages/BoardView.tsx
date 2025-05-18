@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { WorkspaceProvider } from '@/context/WorkspaceContext';
+import { WorkspaceProvider } from '@/context/workspace';
 import { BoardProvider } from '@/context/BoardContext';
 import WorkspaceHeader from '@/components/WorkspaceHeader';
 import Board from '@/components/Board';

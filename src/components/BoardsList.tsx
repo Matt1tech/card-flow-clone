@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useWorkspace } from '@/context/WorkspaceContext';
+import { useWorkspace } from '@/context/workspace';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';

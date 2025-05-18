@@ -2,7 +2,7 @@
 import React from 'react';
 import WorkspaceSelector from './WorkspaceSelector';
 import CreateWorkspace from './CreateWorkspace';
-import { useWorkspace } from '@/context/WorkspaceContext';
+import { useWorkspace } from '@/context/workspace';
 
 export default function WorkspaceHeader() {
   const { currentWorkspace } = useWorkspace();
