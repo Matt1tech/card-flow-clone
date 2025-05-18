@@ -5,7 +5,7 @@ import List from './List';
 import AddList from './AddList';
 
 export default function Board() {
-  const { board, moveCard } = useBoard();
+  const { lists, moveCard } = useBoard();
   const [dragCard, setDragCard] = useState<{ cardId: string; sourceListId: string } | null>(null);
   const dragOverListId = useRef<string | null>(null);
   const dragOverCardIndex = useRef<number | null>(null);
@@ -75,16 +75,11 @@ export default function Board() {
     
     const targetCardIndex = dragOverCardIndex.current !== null 
       ? dragOverCardIndex.current 
-      : board.lists.find(l => l.id === listId)?.cards.length || 0;
+      : lists.find(l => l.id === listId)?.cards.length || 0;
     
     // Only move if we have valid source and target
     if (dragCard.cardId && dragCard.sourceListId && listId) {
-      moveCard(
-        dragCard.cardId, 
-        dragCard.sourceListId, 
-        listId, 
-        targetCardIndex >= 0 ? targetCardIndex : 0
-      );
+      moveCard(dragCard.cardId, dragCard.sourceListId, listId, targetCardIndex >= 0 ? targetCardIndex : 0);
     }
     
     // Reset drag state
@@ -96,7 +91,7 @@ export default function Board() {
   return (
     <div className="flex-1 overflow-x-auto p-6">
       <div className="flex space-x-4 items-start h-full">
-        {board.lists.map((list) => (
+        {lists.map((list) => (
           <List 
             key={list.id} 
             list={list} 
