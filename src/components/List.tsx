@@ -1,11 +1,11 @@
 
 import { useState, DragEvent } from 'react';
 import { List as ListType } from '@/types';
-import { Card } from '@/components/ui/card';
+import { Card as CardUI } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Pencil, MoreHorizontal, Trash2 } from 'lucide-react';
-import Card from './Card';
+import CardComponent from './Card';
 import AddCard from './AddCard';
 import { useBoard } from '@/context/BoardContext';
 import {
@@ -49,7 +49,7 @@ export default function List({ list, onDragStart, onDragOver, onDrop }: ListProp
   };
 
   return (
-    <Card className="flex flex-col w-72 bg-muted/40 shadow-sm h-full max-h-[calc(100vh-10rem)] overflow-hidden">
+    <CardUI className="flex flex-col w-72 bg-muted/40 shadow-sm h-full max-h-[calc(100vh-10rem)] overflow-hidden">
       <div className="p-3 flex items-center justify-between border-b">
         {isEditingTitle ? (
           <form onSubmit={handleTitleSubmit} className="flex-1">
@@ -103,12 +103,12 @@ export default function List({ list, onDragStart, onDragOver, onDrop }: ListProp
         data-list-id={list.id}
       >
         {list.cards.map((card, index) => (
-          <Card 
+          <CardComponent 
             key={card.id} 
             card={card} 
             listId={list.id}
             index={index} 
-            onDragStart={onDragStart} 
+            onDragStart={(e) => onDragStart(e, card.id, list.id)} 
           />
         ))}
       </div>
@@ -116,6 +116,6 @@ export default function List({ list, onDragStart, onDragOver, onDrop }: ListProp
       <div className="p-2 mt-auto">
         <AddCard listId={list.id} />
       </div>
-    </Card>
+    </CardUI>
   );
 }
