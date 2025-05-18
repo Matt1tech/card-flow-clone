@@ -11,14 +11,14 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogClose
+} from '@/components/ui/dialog';
 import {
   MessageSquare, 
   ListChecks, 
@@ -161,9 +161,9 @@ export default function CardDetail({ card, listId, open, onOpenChange }: CardDet
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-xl overflow-y-auto">
-        <SheetHeader className="pb-4">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="pb-4">
           <div className="space-y-2">
             <Input 
               value={title}
@@ -176,7 +176,7 @@ export default function CardDetail({ card, listId, open, onOpenChange }: CardDet
               Created {format(new Date(card.created), 'MMM d, yyyy')}
             </div>
           </div>
-        </SheetHeader>
+        </DialogHeader>
         
         <div className="space-y-6 py-2">
           <div className="flex flex-wrap gap-2">
@@ -382,7 +382,7 @@ export default function CardDetail({ card, listId, open, onOpenChange }: CardDet
           </form>
         </div>
 
-        <SheetFooter className="mt-6 border-t pt-4 flex flex-col sm:flex-row gap-3">
+        <DialogFooter className="mt-6 border-t pt-4 flex flex-col sm:flex-row gap-3">
           <div className="font-medium text-sm mb-2 w-full">Add to card</div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full">
             <Popover>
@@ -571,8 +571,8 @@ export default function CardDetail({ card, listId, open, onOpenChange }: CardDet
               <MessageSquare className="h-4 w-4" /> Comments
             </Button>
           </div>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

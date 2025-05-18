@@ -3,6 +3,7 @@ import React from 'react';
 import { WorkspaceProvider } from '@/context/workspace';
 import WorkspaceHeader from '@/components/WorkspaceHeader';
 import BoardsList from '@/components/BoardsList';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const Index = () => {
   return (
