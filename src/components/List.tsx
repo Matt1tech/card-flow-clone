@@ -4,7 +4,7 @@ import { List as ListType } from '@/types';
 import { Card as CardUI } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Pencil, MoreHorizontal, Trash2 } from 'lucide-react';
+import { Pencil, MoreHorizontal, Trash2, GripHorizontal } from 'lucide-react';
 import CardComponent from './Card';
 import AddCard from './AddCard';
 import { useBoard } from '@/context/BoardContext';
@@ -49,26 +49,31 @@ export default function List({ list, onDragStart, onDragOver, onDrop }: ListProp
   };
 
   return (
-    <CardUI className="flex flex-col w-72 bg-muted/40 dark:bg-muted/10 shadow-sm h-full max-h-[calc(100vh-10rem)] overflow-hidden">
+    <CardUI className="flex flex-col w-full bg-muted/40 dark:bg-muted/10 shadow-sm h-full max-h-[calc(100vh-10rem)] overflow-hidden">
       <div className="p-3 flex items-center justify-between border-b dark:border-border">
-        {isEditingTitle ? (
-          <form onSubmit={handleTitleSubmit} className="flex-1">
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              onBlur={handleTitleSubmit}
-              className="py-1 h-7 text-sm font-medium"
-              autoFocus
-            />
-          </form>
-        ) : (
-          <div 
-            className="flex-1 text-sm font-medium cursor-pointer"
-            onClick={() => setIsEditingTitle(true)}
-          >
-            {list.title}
+        <div className="flex items-center gap-2 flex-1">
+          <div className="cursor-move">
+            <GripHorizontal className="h-4 w-4 text-muted-foreground" />
           </div>
-        )}
+          {isEditingTitle ? (
+            <form onSubmit={handleTitleSubmit} className="flex-1">
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                onBlur={handleTitleSubmit}
+                className="py-1 h-7 text-sm font-medium"
+                autoFocus
+              />
+            </form>
+          ) : (
+            <div 
+              className="flex-1 text-sm font-medium cursor-pointer"
+              onClick={() => setIsEditingTitle(true)}
+            >
+              {list.title}
+            </div>
+          )}
+        </div>
         <div className="flex items-center">
           <Button
             variant="ghost"

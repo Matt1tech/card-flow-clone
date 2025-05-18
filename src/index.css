@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -117,6 +116,14 @@
   .drag-over {
     @apply bg-accent/30 border-dashed border-2 border-primary;
   }
+  
+  .list-container {
+    @apply transition-opacity duration-200;
+  }
+  
+  .list-container.dragging {
+    @apply border-2 border-dashed border-primary;
+  }
 }
 
 /* Customize scrollbar */
@@ -136,4 +143,17 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Resizable panel styles */
+[data-panel-group-direction="horizontal"] > [data-panel] {
+  min-width: 250px;
+}
+
+.list-container {
+  cursor: grab;
+}
+
+.list-container:active {
+  cursor: grabbing;
 }
