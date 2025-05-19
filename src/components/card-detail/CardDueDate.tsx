@@ -5,12 +5,10 @@ import { CalendarIcon, X } from 'lucide-react';
 
 interface CardDueDateProps {
   dueDate?: Date | string;
-  onUpdateDueDate?: (date: Date) => void;
   onRemoveDueDate: () => void;
-  onClose?: () => void;
 }
 
-export function CardDueDate({ dueDate, onUpdateDueDate, onRemoveDueDate, onClose }: CardDueDateProps) {
+export function CardDueDate({ dueDate, onRemoveDueDate }: CardDueDateProps) {
   if (!dueDate) return null;
   
   // Ensure dueDate is a Date object

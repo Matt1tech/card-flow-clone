@@ -7,12 +7,10 @@ import { useTheme } from '@/context/theme/ThemeContext';
 
 interface CardLabelsProps {
   labels: Label[];
-  onAddLabel: (name: string, color: string) => void;
   onDeleteLabel: (labelId: string) => void;
-  onClose: () => void;
 }
 
-export function CardLabels({ labels, onAddLabel, onDeleteLabel, onClose }: CardLabelsProps) {
+export function CardLabels({ labels, onDeleteLabel }: CardLabelsProps) {
   const { theme } = useTheme();
   
   if (!labels || labels.length === 0) return null;

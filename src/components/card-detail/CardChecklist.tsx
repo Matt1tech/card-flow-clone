@@ -8,25 +8,17 @@ import { CardChecklistItem } from './CardChecklistItem';
 
 interface CardChecklistProps {
   checklist: Checklist;
-  isEditing?: boolean;
-  onStartEditing?: () => void;
-  onStopEditing?: () => void;
   onDeleteChecklist: () => void;
   onAddItem: (text: string) => void;
   onUpdateItem: (itemId: string, checked: boolean) => void;
-  onToggleItem: (itemId: string, checked: boolean) => void;
   onDeleteItem: (itemId: string) => void;
 }
 
 export function CardChecklist({ 
-  checklist,
-  isEditing,
-  onStartEditing,
-  onStopEditing,
+  checklist, 
   onDeleteChecklist,
-  onAddItem,
-  onUpdateItem,
-  onToggleItem, 
+  onAddItem, 
+  onUpdateItem, 
   onDeleteItem 
 }: CardChecklistProps) {
   const [newItemText, setNewItemText] = useState('');
@@ -70,7 +62,7 @@ export function CardChecklist({
             id={item.id}
             text={item.text}
             checked={item.checked}
-            onToggle={(checked) => onToggleItem(item.id, checked)}
+            onToggle={(checked) => onUpdateItem(item.id, checked)}
             onDelete={() => onDeleteItem(item.id)}
           />
         ))}

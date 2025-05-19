@@ -5,15 +5,13 @@ import { User, X } from 'lucide-react';
 
 interface CardAssignedUsersProps {
   assignedUsers?: string[];
-  availableUsers?: Array<{ id: string; name: string }>;
-  onAssignUser?: () => void;
+  availableUsers: Array<{ id: string; name: string }>;
   onUnassignUser: (userId: string) => void;
 }
 
 export function CardAssignedUsers({ 
   assignedUsers, 
-  availableUsers = [], 
-  onAssignUser,
+  availableUsers, 
   onUnassignUser 
 }: CardAssignedUsersProps) {
   if (!assignedUsers || assignedUsers.length === 0) return null;

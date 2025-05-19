@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { Card } from '@/types';
 import { 
   Bold, 
   Italic, 
@@ -16,10 +17,10 @@ import { Separator } from '@/components/ui/separator';
 
 interface CardDescriptionProps {
   description: string;
-  onUpdateDescription: (description: string) => void;
+  onSave: (updatedCard: Partial<Card>) => void;
 }
 
-export function CardDescription({ description, onUpdateDescription }: CardDescriptionProps) {
+export function CardDescription({ description, onSave }: CardDescriptionProps) {
   const [value, setValue] = useState(description);
   const [isRTL, setIsRTL] = useState(false);
   
@@ -28,7 +29,7 @@ export function CardDescription({ description, onUpdateDescription }: CardDescri
   }, [description]);
   
   const handleBlur = () => {
-    onUpdateDescription(value);
+    onSave({ description: value });
   };
 
   const formatText = (command: string, value: string | null = null) => {
