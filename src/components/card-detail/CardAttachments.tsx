@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Attachment } from '@/types';
-import { Link, Paperclip, File, FileImage, FileText, FilePdf, Trash2 } from 'lucide-react';
+import { Link, Paperclip, File, FileImage, FileText, FileType, Trash2 } from 'lucide-react';
 
 interface CardAttachmentsProps {
   attachments?: Attachment[];
@@ -17,7 +17,7 @@ export function CardAttachments({ attachments, onDeleteAttachment }: CardAttachm
       if (url.startsWith('data:image/')) {
         return <FileImage className="h-4 w-4 flex-shrink-0" />;
       } else if (url.startsWith('data:application/pdf')) {
-        return <FilePdf className="h-4 w-4 flex-shrink-0" />;
+        return <FileType className="h-4 w-4 flex-shrink-0" />; // Changed from FilePdf to FileType
       } else if (url.startsWith('data:text/')) {
         return <FileText className="h-4 w-4 flex-shrink-0" />;
       } else {
