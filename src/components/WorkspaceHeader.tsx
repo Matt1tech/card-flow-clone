@@ -3,7 +3,10 @@ import React from 'react';
 import WorkspaceSelector from './WorkspaceSelector';
 import CreateWorkspace from './CreateWorkspace';
 import ThemeToggle from './ThemeToggle';
+import SettingsDialog from './settings/SettingsDialog';
+import UserAvatar from './UserAvatar';
 import { useWorkspace } from '@/context/workspace';
+import { Separator } from './ui/separator';
 
 export default function WorkspaceHeader() {
   const { currentWorkspace } = useWorkspace();
@@ -23,7 +26,12 @@ export default function WorkspaceHeader() {
               {currentWorkspace.description}
             </div>
           )}
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <SettingsDialog />
+            <Separator orientation="vertical" className="h-6" />
+            <UserAvatar />
+          </div>
         </div>
       </div>
     </div>

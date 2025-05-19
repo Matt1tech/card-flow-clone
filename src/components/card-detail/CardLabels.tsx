@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/types';
 import { X } from 'lucide-react';
+import { useTheme } from '@/context/theme/ThemeContext';
 
 interface CardLabelsProps {
   labels: Label[];
@@ -10,6 +11,8 @@ interface CardLabelsProps {
 }
 
 export function CardLabels({ labels, onDeleteLabel }: CardLabelsProps) {
+  const { theme } = useTheme();
+  
   if (!labels || labels.length === 0) return null;
   
   return (
@@ -17,7 +20,7 @@ export function CardLabels({ labels, onDeleteLabel }: CardLabelsProps) {
       {labels.map(label => (
         <div key={label.id} className="flex items-center">
           <Badge 
-            className={`bg-${label.color}-500 hover:bg-${label.color}-600`}
+            className={`bg-${label.color}-500 ${theme === 'light' ? 'text-black' : 'text-white'}`}
           >
             {label.name}
           </Badge>

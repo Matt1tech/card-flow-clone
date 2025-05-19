@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -125,6 +126,23 @@
     @apply border-2 border-dashed border-primary;
   }
 }
+
+/* Custom Label Colors for both modes */
+.dark .bg-red-500 { background-color: var(--red-500); }
+.dark .bg-blue-500 { background-color: var(--blue-500); }
+.dark .bg-green-500 { background-color: var(--green-500); }
+.dark .bg-yellow-500 { background-color: var(--yellow-500); }
+.dark .bg-purple-500 { background-color: var(--purple-500); }
+.dark .bg-pink-500 { background-color: var(--pink-500); }
+.dark .bg-orange-500 { background-color: var(--orange-500); }
+
+.light .bg-red-500 { background-color: var(--red-500); color: #000; }
+.light .bg-blue-500 { background-color: var(--blue-500); color: #000; }
+.light .bg-green-500 { background-color: var(--green-500); color: #000; }
+.light .bg-yellow-500 { background-color: var(--yellow-500); color: #000; }
+.light .bg-purple-500 { background-color: var(--purple-500); color: #000; }
+.light .bg-pink-500 { background-color: var(--pink-500); color: #000; }
+.light .bg-orange-500 { background-color: var(--orange-500); color: #000; }
 
 /* Customize scrollbar */
 ::-webkit-scrollbar {
