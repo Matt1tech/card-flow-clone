@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useRef, ChangeEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   Popover, 
@@ -15,8 +16,10 @@ import {
   Paperclip, 
   Link, 
   Plus, 
-  MessageSquare 
+  MessageSquare,
+  Upload
 } from 'lucide-react';
+import { toast } from "sonner";
 
 interface CardActionsProps {
   card: {
@@ -55,6 +58,9 @@ export function CardActions({
   const [newAttachmentUrl, setNewAttachmentUrl] = useState('');
   const [newAttachmentType, setNewAttachmentType] = useState<'file' | 'link'>('link');
   
+  // File upload ref
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   // Event handlers
   const handleAddLabel = (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,6 +88,26 @@ export function CardActions({
       setNewAttachmentUrl('');
       setShowAttachmentForm(false);
     }
+  };
+  
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Create a FileReader to convert the file to a data URL
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const fileDataUrl = event.target?.result as string;
+        if (fileDataUrl) {
+          onAddAttachment(file.name, fileDataUrl, 'file');
+          toast.success("File uploaded successfully");
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleFileButtonClick = () => {
+    fileInputRef.current?.click();
   };
   
   return (
@@ -213,56 +239,73 @@ export function CardActions({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80">
-          {showAttachmentForm ? (
-            <form onSubmit={handleAddAttachment} className="space-y-2">
-              <h4 className="font-medium">Add Attachment</h4>
-              <div className="flex gap-2">
-                <Button 
-                  type="button" 
-                  variant={newAttachmentType === 'link' ? 'default' : 'outline'} 
-                  size="sm"
-                  onClick={() => setNewAttachmentType('link')}
-                >
-                  <Link className="h-4 w-4 mr-2" /> Link
-                </Button>
-                <Button 
-                  type="button" 
-                  variant={newAttachmentType === 'file' ? 'default' : 'outline'} 
-                  size="sm"
-                  onClick={() => setNewAttachmentType('file')}
-                >
-                  <Paperclip className="h-4 w-4 mr-2" /> File
-                </Button>
-              </div>
-              
-              <Input
-                value={newAttachmentName}
-                onChange={(e) => setNewAttachmentName(e.target.value)}
-                placeholder="Name"
-                className="text-sm"
+          <div className="space-y-3">
+            <h4 className="font-medium">Add Attachment</h4>
+            
+            <div className="space-y-2">
+              <Button 
+                className="w-full justify-start" 
+                variant="outline"
+                onClick={handleFileButtonClick}
+              >
+                <Upload className="h-4 w-4 mr-2" /> Upload File
+              </Button>
+              <input 
+                ref={fileInputRef}
+                type="file" 
+                className="hidden"
+                onChange={handleFileChange}
+                accept="image/*,application/pdf,text/*"
               />
               
-              <Input
-                value={newAttachmentUrl}
-                onChange={(e) => setNewAttachmentUrl(e.target.value)}
-                placeholder="URL"
-                className="text-sm"
-              />
-              
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="ghost" size="sm" onClick={() => setShowAttachmentForm(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit" size="sm" disabled={!newAttachmentName.trim() || !newAttachmentUrl.trim()}>
-                  Add
-                </Button>
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Or</span>
+                </div>
               </div>
-            </form>
-          ) : (
-            <Button onClick={() => setShowAttachmentForm(true)} className="w-full">
-              <Plus className="h-4 w-4 mr-2" /> Add Attachment
-            </Button>
-          )}
+              
+              {showAttachmentForm ? (
+                <form onSubmit={handleAddAttachment} className="space-y-2">
+                  <Input
+                    value={newAttachmentName}
+                    onChange={(e) => setNewAttachmentName(e.target.value)}
+                    placeholder="Link title"
+                    className="text-sm"
+                  />
+                  
+                  <Input
+                    value={newAttachmentUrl}
+                    onChange={(e) => setNewAttachmentUrl(e.target.value)}
+                    placeholder="URL"
+                    className="text-sm"
+                  />
+                  
+                  <div className="flex justify-end gap-2">
+                    <Button type="button" variant="ghost" size="sm" onClick={() => setShowAttachmentForm(false)}>
+                      Cancel
+                    </Button>
+                    <Button type="submit" size="sm" disabled={!newAttachmentName.trim() || !newAttachmentUrl.trim()}>
+                      Add Link
+                    </Button>
+                  </div>
+                </form>
+              ) : (
+                <Button 
+                  onClick={() => {
+                    setNewAttachmentType('link');
+                    setShowAttachmentForm(true);
+                  }} 
+                  variant="outline" 
+                  className="w-full justify-start"
+                >
+                  <Link className="h-4 w-4 mr-2" /> Add Link
+                </Button>
+              )}
+            </div>
+          </div>
         </PopoverContent>
       </Popover>
 
