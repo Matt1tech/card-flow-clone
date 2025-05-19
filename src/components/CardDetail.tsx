@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useBoard } from '@/context/BoardContext';
@@ -163,6 +162,13 @@ export default function CardDetail() {
     }
   };
   
+  // Handle removing due date
+  const handleRemoveDueDate = () => {
+    if (card && listId) {
+      updateDueDate(listId, card.id, undefined);
+    }
+  };
+
   // Render the card cover if available
   const renderCover = () => {
     if (!card?.cover) return null;
@@ -221,6 +227,7 @@ export default function CardDetail() {
               <CardDueDate
                 dueDate={card.dueDate}
                 onUpdateDueDate={handleUpdateDueDate}
+                onRemoveDueDate={handleRemoveDueDate}
                 onClose={() => setShowDueDatePicker(false)}
               />
             )}
@@ -234,6 +241,7 @@ export default function CardDetail() {
                 onStopEditing={() => setEditingChecklist(null)}
                 onAddItem={(text) => handleAddChecklistItem(checklist.id, text)}
                 onToggleItem={(itemId, checked) => handleToggleChecklistItem(checklist.id, itemId, checked)}
+                onUpdateItem={(itemId, checked) => handleToggleChecklistItem(checklist.id, itemId, checked)}
                 onDeleteItem={(itemId) => handleDeleteChecklistItem(checklist.id, itemId)}
                 onDeleteChecklist={() => handleDeleteChecklist(checklist.id)}
               />
