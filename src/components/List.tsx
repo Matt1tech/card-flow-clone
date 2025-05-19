@@ -4,16 +4,23 @@ import { List as ListType } from '@/types';
 import { Card as CardUI } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Pencil, MoreHorizontal, Trash2, GripHorizontal } from 'lucide-react';
+import { Pencil, MoreHorizontal, Trash2, GripHorizontal, Image, X } from 'lucide-react';
 import CardComponent from './Card';
 import AddCard from './AddCard';
 import { useBoard } from '@/context/BoardContext';
+import CoverSelector from './covers/CoverSelector';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover';
 
 interface ListProps {
   list: ListType;
@@ -23,7 +30,7 @@ interface ListProps {
 }
 
 export default function List({ list, onDragStart, onDragOver, onDrop }: ListProps) {
-  const { updateListTitle, deleteList } = useBoard();
+  const { updateListTitle, deleteList, updateListCover } = useBoard();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [title, setTitle] = useState(list.title);
 
@@ -48,8 +55,42 @@ export default function List({ list, onDragStart, onDragOver, onDrop }: ListProp
     deleteList(list.id);
   };
 
+  const handleCoverSelect = (cover: { url: string, color?: string }) => {
+    updateListCover(list.id, cover);
+  };
+
+  const handleRemoveCover = () => {
+    updateListCover(list.id, undefined);
+  };
+
+  const renderCover = () => {
+    if (!list.cover) return null;
+    
+    const coverStyle = list.cover.url 
+      ? { backgroundImage: `url(${list.cover.url})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+      : { backgroundColor: list.cover.color };
+    
+    return (
+      <div 
+        className="w-full h-24 relative" 
+        style={coverStyle}
+      >
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-1 right-1 bg-black/20 hover:bg-black/40 text-white h-6 w-6 rounded-full"
+          onClick={handleRemoveCover}
+        >
+          <X className="h-3 w-3" />
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <CardUI className="flex flex-col w-full bg-muted/40 dark:bg-muted/10 shadow-sm h-full max-h-[calc(100vh-10rem)] overflow-hidden">
+      {renderCover()}
+      
       <div className="p-3 flex items-center justify-between border-b dark:border-border">
         <div className="flex items-center gap-2 flex-1">
           <div className="cursor-move">
@@ -90,6 +131,21 @@ export default function List({ list, onDragStart, onDragOver, onDrop }: ListProp
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    <Image className="mr-2 h-4 w-4" /> Change Cover
+                  </DropdownMenuItem>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 p-0">
+                  <CoverSelector
+                    currentCover={list.cover}
+                    onSelectCover={handleCoverSelect}
+                    onRemoveCover={handleRemoveCover}
+                  />
+                </PopoverContent>
+              </Popover>
+              <DropdownMenuSeparator />
               <DropdownMenuItem 
                 className="text-destructive focus:text-destructive"
                 onClick={handleDeleteList}

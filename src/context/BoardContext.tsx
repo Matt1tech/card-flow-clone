@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { toast } from "sonner";
-import { List, Card, Comment, ChecklistItem, Checklist, Label, Attachment } from '@/types';
+import { List, Card, Comment, ChecklistItem, Checklist, Label, Attachment, Cover } from '@/types';
 
 // Interface for the board data
 interface BoardData {
@@ -38,6 +38,10 @@ interface BoardContextType {
   
   addAttachment: (listId: string, cardId: string, name: string, url: string, type: 'file' | 'link') => void;
   deleteAttachment: (listId: string, cardId: string, attachmentId: string) => void;
+  
+  // New methods for covers
+  updateCardCover: (listId: string, cardId: string, cover: Cover | undefined) => void;
+  updateListCover: (listId: string, cover: Cover | undefined) => void;
 }
 
 // Initial state for the board context
@@ -632,6 +636,47 @@ export const BoardProvider = ({ children }: { children: ReactNode }) => {
     toast.success("Attachment deleted");
   };
 
+  // New methods for covers
+  const updateCardCover = (listId: string, cardId: string, cover: Cover | undefined) => {
+    setBoard(prevBoard => ({
+      ...prevBoard,
+      lists: prevBoard.lists.map(list => {
+        if (list.id === listId) {
+          return {
+            ...list,
+            cards: list.cards.map(card => {
+              if (card.id === cardId) {
+                return {
+                  ...card,
+                  cover
+                };
+              }
+              return card;
+            })
+          };
+        }
+        return list;
+      })
+    }));
+    toast.success(cover ? "Card cover updated" : "Card cover removed");
+  };
+
+  const updateListCover = (listId: string, cover: Cover | undefined) => {
+    setBoard(prevBoard => ({
+      ...prevBoard,
+      lists: prevBoard.lists.map(list => {
+        if (list.id === listId) {
+          return {
+            ...list,
+            cover
+          };
+        }
+        return list;
+      })
+    }));
+    toast.success(cover ? "List cover updated" : "List cover removed");
+  };
+
   return (
     <BoardContext.Provider
       value={{
@@ -657,6 +702,8 @@ export const BoardProvider = ({ children }: { children: ReactNode }) => {
         updateDueDate,
         addAttachment,
         deleteAttachment,
+        updateCardCover,
+        updateListCover,
       }}
     >
       {children}

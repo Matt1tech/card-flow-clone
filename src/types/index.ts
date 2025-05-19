@@ -1,4 +1,5 @@
 
+
 export interface Comment {
   id: string;
   text: string;
@@ -32,6 +33,11 @@ export interface Attachment {
   createdAt: Date;
 }
 
+export interface Cover {
+  url: string;
+  color?: string;
+}
+
 export interface Card {
   id: string;
   title: string;
@@ -43,12 +49,14 @@ export interface Card {
   assignedUsers?: string[];
   dueDate?: Date;
   attachments?: Attachment[];
+  cover?: Cover;
 }
 
 export interface List {
   id: string;
   title: string;
   cards: Card[];
+  cover?: Cover;
 }
 
 export interface Board {
@@ -63,3 +71,4 @@ export interface Workspace {
   description: string;
   boards: Board[];
 }
+
