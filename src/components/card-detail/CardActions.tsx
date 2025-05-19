@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -208,8 +207,9 @@ export function CardActions({
       
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="gap-2 justify-start">
-            <Paperclip className="h-4 w-4" /> Attachment
+          <Button variant="outline" size="sm" className="gap-2 justify-start items-center">
+            <Paperclip className="h-4 w-4 flex-shrink-0" /> 
+            <span className="truncate">Attachment</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80">
@@ -266,8 +266,9 @@ export function CardActions({
         </PopoverContent>
       </Popover>
 
-      <Button variant="outline" size="sm" className="gap-2 justify-start">
-        <MessageSquare className="h-4 w-4" /> Comments
+      <Button variant="outline" size="sm" className="gap-2 justify-start items-center">
+        <MessageSquare className="h-4 w-4 flex-shrink-0" /> 
+        <span className="truncate">Comments</span>
       </Button>
     </div>
   );

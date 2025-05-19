@@ -20,7 +20,7 @@ export function CardLabels({ labels, onDeleteLabel }: CardLabelsProps) {
       {labels.map(label => (
         <div key={label.id} className="flex items-center">
           <Badge 
-            className={`bg-${label.color}-500 ${theme === 'light' ? 'text-black' : 'text-white'}`}
+            className={`bg-${label.color}-500 hover:bg-${label.color}-600 ${theme === 'light' ? 'text-black' : 'text-white'}`}
           >
             {label.name}
           </Badge>
