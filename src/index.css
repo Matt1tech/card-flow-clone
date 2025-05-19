@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -82,7 +81,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 262 52% 55%;
-    
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -111,16 +110,16 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300;
   }
-  
+
   /* Responsive typography */
   h1 {
     @apply text-xl md:text-2xl font-bold;
   }
-  
+
   h2 {
     @apply text-lg md:text-xl font-semibold;
   }
-  
+
   h3 {
     @apply text-base md:text-lg font-medium;
   }
@@ -130,41 +129,76 @@
   .drag-over {
     @apply bg-accent/30 border-dashed border-2 border-primary;
   }
-  
+
   .list-container {
     @apply transition-opacity duration-200;
   }
-  
+
   .list-container.dragging {
     @apply border-2 border-dashed border-primary;
   }
-  
+
   /* Responsive utilities */
   .responsive-container {
     @apply w-full px-2 sm:px-4 md:px-6 max-w-7xl mx-auto;
   }
-  
+
   .responsive-grid {
     @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
   }
 }
 
 /* Custom Label Colors for both modes */
-.dark .bg-red-500 { background-color: var(--red-500); }
-.dark .bg-blue-500 { background-color: var(--blue-500); }
-.dark .bg-green-500 { background-color: var(--green-500); }
-.dark .bg-yellow-500 { background-color: var(--yellow-500); }
-.dark .bg-purple-500 { background-color: var(--purple-500); }
-.dark .bg-pink-500 { background-color: var(--pink-500); }
-.dark .bg-orange-500 { background-color: var(--orange-500); }
+.dark .bg-red-500 {
+  background-color: var(--red-500);
+}
+.dark .bg-blue-500 {
+  background-color: var(--blue-500);
+}
+.dark .bg-green-500 {
+  background-color: var(--green-500);
+}
+.dark .bg-yellow-500 {
+  background-color: var(--yellow-500);
+}
+.dark .bg-purple-500 {
+  background-color: var(--purple-500);
+}
+.dark .bg-pink-500 {
+  background-color: var(--pink-500);
+}
+.dark .bg-orange-500 {
+  background-color: var(--orange-500);
+}
 
-.light .bg-red-500 { background-color: var(--red-500); color: #fff; }
-.light .bg-blue-500 { background-color: var(--blue-500); color: #fff; }
-.light .bg-green-500 { background-color: var(--green-500); color: #fff; }
-.light .bg-yellow-500 { background-color: var(--yellow-500); color: #000; }
-.light .bg-purple-500 { background-color: var(--purple-500); color: #fff; }
-.light .bg-pink-500 { background-color: var(--pink-500); color: #fff; }
-.light .bg-orange-500 { background-color: var(--orange-500); color: #fff; }
+.light .bg-red-500 {
+  background-color: var(--red-500);
+  color: #fff;
+}
+.light .bg-blue-500 {
+  background-color: var(--blue-500);
+  color: #fff;
+}
+.light .bg-green-500 {
+  background-color: var(--green-500);
+  color: #fff;
+}
+.light .bg-yellow-500 {
+  background-color: var(--yellow-500);
+  color: #000;
+}
+.light .bg-purple-500 {
+  background-color: var(--purple-500);
+  color: #fff;
+}
+.light .bg-pink-500 {
+  background-color: var(--pink-500);
+  color: #fff;
+}
+.light .bg-orange-500 {
+  background-color: var(--orange-500);
+  color: #fff;
+}
 
 /* Customize scrollbar */
 ::-webkit-scrollbar {
@@ -212,12 +246,42 @@ html.compact .list-content {
   .board-container {
     @apply px-1;
   }
-  
+
   .list-wrapper {
     @apply min-w-[270px];
   }
-  
+
   .list-header {
     @apply py-1 px-2;
+  }
+}
+
+/*
+  Ensure .board-container enables horizontal scrolling and .list-container and AddList have min/max widths for visibility.
+*/
+.board-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.list-container {
+  min-width: 270px;
+  max-width: 350px;
+  flex-shrink: 0;
+}
+
+.board-container > div {
+  min-width: 100%;
+  width: max-content;
+}
+
+@media (max-width: 640px) {
+  .board-container {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+  .list-container {
+    min-width: 220px;
+    max-width: 90vw;
   }
 }

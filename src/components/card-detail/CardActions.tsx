@@ -1,24 +1,23 @@
-
-import { useState, useRef, ChangeEvent } from 'react';
-import { Button } from '@/components/ui/button';
-import { 
-  Popover, 
-  PopoverTrigger, 
-  PopoverContent 
-} from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
-import { 
-  Tag, 
-  ListChecks, 
-  Calendar as CalendarIcon, 
-  User, 
-  Paperclip, 
-  Link, 
-  Plus, 
+import { useState, useRef, ChangeEvent, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import {
+  Tag,
+  ListChecks,
+  Calendar as CalendarIcon,
+  User,
+  Paperclip,
+  Link,
+  Plus,
   MessageSquare,
-  Upload
-} from 'lucide-react';
+  Upload,
+} from "lucide-react";
 import { toast } from "sonner";
 
 interface CardActionsProps {
@@ -32,7 +31,11 @@ interface CardActionsProps {
   onAddChecklist: (title: string) => void;
   onUpdateDueDate: (date?: Date) => void;
   onAssignUser: (userId: string) => void;
-  onAddAttachment: (name: string, url: string, type: 'file' | 'link') => void;
+  onAddAttachment: (
+    name: string,
+    url: string,
+    type: "file" | "link" | "folder"
+  ) => void;
 }
 
 export function CardActions({
@@ -43,53 +46,65 @@ export function CardActions({
   onAddChecklist,
   onUpdateDueDate,
   onAssignUser,
-  onAddAttachment
+  onAddAttachment,
 }: CardActionsProps) {
   // States for forms
   const [showLabelForm, setShowLabelForm] = useState(false);
-  const [newLabelName, setNewLabelName] = useState('');
-  const [newLabelColor, setNewLabelColor] = useState('blue');
-  
+  const [newLabelName, setNewLabelName] = useState("");
+  const [newLabelColor, setNewLabelColor] = useState("blue");
+
   const [showChecklistForm, setShowChecklistForm] = useState(false);
-  const [newChecklistTitle, setNewChecklistTitle] = useState('');
-  
+  const [newChecklistTitle, setNewChecklistTitle] = useState("");
+
   const [showAttachmentForm, setShowAttachmentForm] = useState(false);
-  const [newAttachmentName, setNewAttachmentName] = useState('');
-  const [newAttachmentUrl, setNewAttachmentUrl] = useState('');
-  const [newAttachmentType, setNewAttachmentType] = useState<'file' | 'link'>('link');
-  
-  // File upload ref
+  const [newAttachmentName, setNewAttachmentName] = useState("");
+  const [newAttachmentUrl, setNewAttachmentUrl] = useState("");
+  const [newAttachmentType, setNewAttachmentType] = useState<"file" | "link">(
+    "link"
+  );
+
+  // File and folder upload refs
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+  const folderInputRef = useRef<HTMLInputElement>(null);
+
+  // Set webkitdirectory property imperatively
+  useEffect(() => {
+    if (folderInputRef.current) {
+      (folderInputRef.current as any).webkitdirectory = true;
+      (folderInputRef.current as any).directory = true;
+      folderInputRef.current.multiple = true;
+    }
+  }, []);
+
   // Event handlers
   const handleAddLabel = (e: React.FormEvent) => {
     e.preventDefault();
     if (newLabelName.trim()) {
       onAddLabel(newLabelName, newLabelColor);
-      setNewLabelName('');
+      setNewLabelName("");
       setShowLabelForm(false);
     }
   };
-  
+
   const handleAddChecklist = (e: React.FormEvent) => {
     e.preventDefault();
     if (newChecklistTitle.trim()) {
       onAddChecklist(newChecklistTitle);
-      setNewChecklistTitle('');
+      setNewChecklistTitle("");
       setShowChecklistForm(false);
     }
   };
-  
+
   const handleAddAttachment = (e: React.FormEvent) => {
     e.preventDefault();
     if (newAttachmentName.trim() && newAttachmentUrl.trim()) {
       onAddAttachment(newAttachmentName, newAttachmentUrl, newAttachmentType);
-      setNewAttachmentName('');
-      setNewAttachmentUrl('');
+      setNewAttachmentName("");
+      setNewAttachmentUrl("");
       setShowAttachmentForm(false);
     }
   };
-  
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -98,7 +113,7 @@ export function CardActions({
       reader.onload = (event) => {
         const fileDataUrl = event.target?.result as string;
         if (fileDataUrl) {
-          onAddAttachment(file.name, fileDataUrl, 'file');
+          onAddAttachment(file.name, fileDataUrl, "file");
           toast.success("File uploaded successfully");
         }
       };
@@ -109,7 +124,26 @@ export function CardActions({
   const handleFileButtonClick = () => {
     fileInputRef.current?.click();
   };
-  
+
+  const handleFolderButtonClick = () => {
+    folderInputRef.current?.click();
+  };
+
+  const handleFolderChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const folderName = files[0].webkitRelativePath.split("/")[0];
+      const fileList = Array.from(files).map((file) => ({
+        name: file.name,
+        path: file.webkitRelativePath,
+        size: file.size,
+        type: file.type,
+      }));
+      onAddAttachment(folderName, JSON.stringify(fileList), "folder");
+      toast.success("Folder uploaded successfully");
+    }
+  };
+
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full">
       <Popover>
@@ -122,8 +156,8 @@ export function CardActions({
           <div className="space-y-2">
             <h4 className="font-medium">Labels</h4>
             <div className="grid grid-cols-2 gap-2">
-              {labelColors.map(color => (
-                <Button 
+              {labelColors.map((color) => (
+                <Button
                   key={color}
                   variant="ghost"
                   className={`bg-${color}-500 text-white justify-start hover:bg-${color}-600`}
@@ -136,9 +170,12 @@ export function CardActions({
                 </Button>
               ))}
             </div>
-            
+
             {showLabelForm && (
-              <form onSubmit={handleAddLabel} className="space-y-2 pt-2 border-t">
+              <form
+                onSubmit={handleAddLabel}
+                className="space-y-2 pt-2 border-t"
+              >
                 <Input
                   value={newLabelName}
                   onChange={(e) => setNewLabelName(e.target.value)}
@@ -146,10 +183,17 @@ export function CardActions({
                   className="text-sm"
                 />
                 <div className="flex justify-end gap-2">
-                  <Button type="button" variant="ghost" size="sm" onClick={() => setShowLabelForm(false)}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowLabelForm(false)}
+                  >
                     Cancel
                   </Button>
-                  <Button type="submit" size="sm">Add</Button>
+                  <Button type="submit" size="sm">
+                    Add
+                  </Button>
                 </div>
               </form>
             )}
@@ -174,14 +218,24 @@ export function CardActions({
                 className="text-sm"
               />
               <div className="flex justify-end gap-2">
-                <Button type="button" variant="ghost" size="sm" onClick={() => setShowChecklistForm(false)}>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowChecklistForm(false)}
+                >
                   Cancel
                 </Button>
-                <Button type="submit" size="sm">Add</Button>
+                <Button type="submit" size="sm">
+                  Add
+                </Button>
               </div>
             </form>
           ) : (
-            <Button onClick={() => setShowChecklistForm(true)} className="w-full">
+            <Button
+              onClick={() => setShowChecklistForm(true)}
+              className="w-full"
+            >
               <Plus className="h-4 w-4 mr-2" /> Add Checklist
             </Button>
           )}
@@ -205,7 +259,7 @@ export function CardActions({
           />
         </PopoverContent>
       </Popover>
-      
+
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" className="gap-2 justify-start">
@@ -215,9 +269,9 @@ export function CardActions({
         <PopoverContent className="w-80">
           <div className="space-y-2">
             <h4 className="font-medium">Assign Members</h4>
-            
-            {availableUsers.map(user => (
-              <Button 
+
+            {availableUsers.map((user) => (
+              <Button
                 key={user.id}
                 variant="ghost"
                 className="w-full justify-start"
@@ -230,43 +284,69 @@ export function CardActions({
           </div>
         </PopoverContent>
       </Popover>
-      
+
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="gap-2 justify-start items-center">
-            <Paperclip className="h-4 w-4 flex-shrink-0" /> 
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2 justify-start items-center"
+          >
+            <Paperclip className="h-4 w-4 flex-shrink-0" />
             <span className="truncate">Attachment</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80">
           <div className="space-y-3">
             <h4 className="font-medium">Add Attachment</h4>
-            
+
             <div className="space-y-2">
-              <Button 
-                className="w-full justify-start" 
+              <Button
+                className="w-full justify-start"
                 variant="outline"
                 onClick={handleFileButtonClick}
               >
                 <Upload className="h-4 w-4 mr-2" /> Upload File
               </Button>
-              <input 
+              <input
                 ref={fileInputRef}
-                type="file" 
+                type="file"
                 className="hidden"
                 onChange={handleFileChange}
                 accept="image/*,application/pdf,text/*"
               />
-              
+
+              <Button
+                className="w-full justify-start"
+                variant="outline"
+                onClick={handleFolderButtonClick}
+                type="button"
+              >
+                <Upload className="h-4 w-4 mr-2" /> Upload Folder
+              </Button>
+              <input
+                ref={folderInputRef}
+                type="file"
+                className="hidden"
+                onChange={handleFolderChange}
+                multiple
+                // @ts-ignore
+                webkitdirectory="true"
+                // @ts-ignore
+                directory="true"
+              />
+
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Or</span>
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or
+                  </span>
                 </div>
               </div>
-              
+
               {showAttachmentForm ? (
                 <form onSubmit={handleAddAttachment} className="space-y-2">
                   <Input
@@ -275,30 +355,41 @@ export function CardActions({
                     placeholder="Link title"
                     className="text-sm"
                   />
-                  
+
                   <Input
                     value={newAttachmentUrl}
                     onChange={(e) => setNewAttachmentUrl(e.target.value)}
                     placeholder="URL"
                     className="text-sm"
                   />
-                  
+
                   <div className="flex justify-end gap-2">
-                    <Button type="button" variant="ghost" size="sm" onClick={() => setShowAttachmentForm(false)}>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowAttachmentForm(false)}
+                    >
                       Cancel
                     </Button>
-                    <Button type="submit" size="sm" disabled={!newAttachmentName.trim() || !newAttachmentUrl.trim()}>
+                    <Button
+                      type="submit"
+                      size="sm"
+                      disabled={
+                        !newAttachmentName.trim() || !newAttachmentUrl.trim()
+                      }
+                    >
                       Add Link
                     </Button>
                   </div>
                 </form>
               ) : (
-                <Button 
+                <Button
                   onClick={() => {
-                    setNewAttachmentType('link');
+                    setNewAttachmentType("link");
                     setShowAttachmentForm(true);
-                  }} 
-                  variant="outline" 
+                  }}
+                  variant="outline"
                   className="w-full justify-start"
                 >
                   <Link className="h-4 w-4 mr-2" /> Add Link
@@ -309,8 +400,12 @@ export function CardActions({
         </PopoverContent>
       </Popover>
 
-      <Button variant="outline" size="sm" className="gap-2 justify-start items-center">
-        <MessageSquare className="h-4 w-4 flex-shrink-0" /> 
+      <Button
+        variant="outline"
+        size="sm"
+        className="gap-2 justify-start items-center"
+      >
+        <MessageSquare className="h-4 w-4 flex-shrink-0" />
         <span className="truncate">Comments</span>
       </Button>
     </div>

@@ -1,4 +1,3 @@
-
 export interface Comment {
   id: string;
   text: string;
@@ -28,7 +27,7 @@ export interface Attachment {
   id: string;
   name: string;
   url: string;
-  type: 'file' | 'link';
+  type: "file" | "link" | "folder";
   createdAt: Date;
 }
 
