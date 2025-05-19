@@ -39,13 +39,13 @@ export function CardAttachments({ attachments, onDeleteAttachment }: CardAttachm
       <div className="space-y-2">
         {attachments.map(attachment => (
           <div key={attachment.id} className="flex items-center justify-between border rounded-md p-2 hover:bg-accent/30 transition-colors">
-            <div className="flex items-center gap-2 max-w-[80%]">
+            <div className="flex items-center gap-2 w-[calc(100%-40px)]">
               {getFileIcon(attachment.url, attachment.type)}
               <a 
                 href={attachment.url} 
                 target="_blank" 
                 rel="noreferrer"
-                className="text-sm text-blue-500 hover:underline overflow-hidden text-ellipsis whitespace-nowrap"
+                className="text-sm text-blue-500 hover:underline truncate max-w-full"
                 title={attachment.name}
               >
                 {attachment.name}

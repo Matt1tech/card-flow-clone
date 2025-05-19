@@ -111,6 +111,19 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300;
   }
+  
+  /* Responsive typography */
+  h1 {
+    @apply text-xl md:text-2xl font-bold;
+  }
+  
+  h2 {
+    @apply text-lg md:text-xl font-semibold;
+  }
+  
+  h3 {
+    @apply text-base md:text-lg font-medium;
+  }
 }
 
 @layer utilities {
@@ -125,6 +138,15 @@
   .list-container.dragging {
     @apply border-2 border-dashed border-primary;
   }
+  
+  /* Responsive utilities */
+  .responsive-container {
+    @apply w-full px-2 sm:px-4 md:px-6 max-w-7xl mx-auto;
+  }
+  
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
+  }
 }
 
 /* Custom Label Colors for both modes */
@@ -136,13 +158,13 @@
 .dark .bg-pink-500 { background-color: var(--pink-500); }
 .dark .bg-orange-500 { background-color: var(--orange-500); }
 
-.light .bg-red-500 { background-color: var(--red-500); color: #000; }
-.light .bg-blue-500 { background-color: var(--blue-500); color: #000; }
-.light .bg-green-500 { background-color: var(--green-500); color: #000; }
+.light .bg-red-500 { background-color: var(--red-500); color: #fff; }
+.light .bg-blue-500 { background-color: var(--blue-500); color: #fff; }
+.light .bg-green-500 { background-color: var(--green-500); color: #fff; }
 .light .bg-yellow-500 { background-color: var(--yellow-500); color: #000; }
-.light .bg-purple-500 { background-color: var(--purple-500); color: #000; }
-.light .bg-pink-500 { background-color: var(--pink-500); color: #000; }
-.light .bg-orange-500 { background-color: var(--orange-500); color: #000; }
+.light .bg-purple-500 { background-color: var(--purple-500); color: #fff; }
+.light .bg-pink-500 { background-color: var(--pink-500); color: #fff; }
+.light .bg-orange-500 { background-color: var(--orange-500); color: #fff; }
 
 /* Customize scrollbar */
 ::-webkit-scrollbar {
@@ -174,4 +196,28 @@
 
 .list-container:active {
   cursor: grabbing;
+}
+
+/* Compact mode */
+html.compact .card {
+  @apply py-1.5 px-2;
+}
+
+html.compact .list-content {
+  @apply gap-1;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .board-container {
+    @apply px-1;
+  }
+  
+  .list-wrapper {
+    @apply min-w-[270px];
+  }
+  
+  .list-header {
+    @apply py-1 px-2;
+  }
 }
